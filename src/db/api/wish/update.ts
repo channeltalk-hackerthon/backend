@@ -1,11 +1,12 @@
 import { ObjectId } from 'mongoose';
 import Wish from '../../schema/wish';
 
-const updateWish = (wishId: ObjectId, product_name: String,  description: String, expire_at: Date, status: String) => {
+const updateWish = (owner: ObjectId, wishId: ObjectId, product_name: String,  description: String, expire_at: Date, status: String) => {
     return new Promise((res, rej) => {
         Wish.updateOne(
             {
-                _id: wishId
+                _id: wishId,
+                owner: owner,
             },
             {
                 $set: {
