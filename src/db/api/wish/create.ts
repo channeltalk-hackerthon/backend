@@ -1,8 +1,9 @@
 import mongoose, { ObjectId} from "mongoose";
 import Wish from "../../schema/wish";
 
-const createWish = (product_name: String, product_id: ObjectId, description: String, currency: String, price: Number, expire_at: Date) => {
+const createWish = (owner: ObjectId, product_name: String, product_id: ObjectId, description: String, currency: String, price: Number, expire_at: Date) => {
     const newwish = new Wish({
+        owner: owner,
         product_name: product_name,
         product_id: product_id,
         description: description,
