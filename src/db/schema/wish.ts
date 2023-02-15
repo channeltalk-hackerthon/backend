@@ -6,7 +6,7 @@ interface IWish {
     description: String,
     currency: String,
     price: Number,
-    funded_amount: Number,
+    fundlogs: [ObjectId],
     started_at: Date,
     expire_at: Date,
     status: 'active' | 'inactive',
@@ -19,7 +19,7 @@ const wishSchema = new Schema<IWish> (
         description: {type: String, required: true},
         currency: {type: String, required: true},
         price: {type: Number, required: true},
-        funded_amount: {type: Number, required: true},
+        fundlogs: [{type: Schema.Types.ObjectId, ref: 'FundLog', required: true}],
         started_at: {type: Date, required: true},
         expire_at: {type: Date, required: true},
         status: {type: String, enum: ['active', 'inactive'], required: true}
