@@ -1,6 +1,7 @@
 import {Schema, model, connect, ObjectId} from 'mongoose';
 
 interface IWish {
+    owner: ObjectId,
     product_name: String,
     product_id: ObjectId,
     description: String,
@@ -14,6 +15,7 @@ interface IWish {
 
 const wishSchema = new Schema<IWish> (
     {
+        owner: {type: Schema.Types.ObjectId, ref: 'User', required: true}, 
         product_name: {type: String, required: true},
         product_id: {type: Schema.Types.ObjectId, ref: 'Product', required: true},
         description: {type: String, required: true},
