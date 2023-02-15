@@ -3,11 +3,14 @@ import User from '../../schema/user';
 import Wish from '../../schema/wish';
 import findUser from '../user/find';
 
-const readWish = (userId: ObjectId) => {
+const readWish = (owner: ObjectId) => {
     return new Promise((res, rej) => {
-        findUser(userId)
+        findUser(owner)
             .then((user: any) => {
-                user.populate('wishlist');
+                const userId = user._id;
+                return User.findById(userId).populate('wishlist')
+            })
+            .then((user: any) => {
                 res(user.wishlist);
             })
             .catch((err) => {
