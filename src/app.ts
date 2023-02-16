@@ -1,7 +1,6 @@
-
 import express, {Express, Request, Response} from "express";
 import connectDB from "./db/connect";
-import authRouter from './routes/auth';
+import authRouter from "./router/auth/authRouter";
 
 const app: Express = express();
 const port = process.env.PORT;
