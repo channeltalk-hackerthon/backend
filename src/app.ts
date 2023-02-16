@@ -6,6 +6,7 @@ import passportConfig from "./utils/passport";
 import {config} from 'dotenv';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import isLoggedIn from "./router/auth/isLoggedIn";
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -25,6 +26,7 @@ app.use(
         cookie: {maxAge: 3.6e6*24},
     })
 )
+
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -46,6 +48,13 @@ app.get('/checkserver', (req: Request, res: Response) => {
 })
 
 app.use('/auth', authRouter);
+
+//test purpose
+app.get('/checkuser',isLoggedIn, (req: Request, res: Response) => {
+    console.log("got checkuser request");
+    res.send(`user info: ${req.user}`);
+})
+
 
 app.listen(port, () => {
     console.log(`🏀 Server is Running at http://localhost:${port}`);
