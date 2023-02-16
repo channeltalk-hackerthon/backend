@@ -7,7 +7,7 @@ const findUser = (userId: mongoose.Types.ObjectId) => {
             .findOne({_id: userId})
             .then((user) => {
                 if (user == null) {
-                    rej("User not exists");
+                    rej("User not exists. Find User by Id");
                 }
                 res(user)
             })
