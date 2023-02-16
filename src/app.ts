@@ -1,12 +1,39 @@
 import express, {Express, Request, Response} from "express";
 import connectDB from "./db/connect";
 import authRouter from "./router/auth/authRouter";
+import passport from "passport";
+import passportConfig from "./utils/passport";
+import {config} from 'dotenv';
+import session from 'express-session';
+import MongoStore from 'connect-mongo';
 
 const app: Express = express();
 const port = process.env.PORT;
 
+//load env variables from dotenv file
+config();
+
+//add express session. session database is mongodb
+app.use(
+    session({
+        secret: `${process.env.SESSION_SECRET}`,
+        resave: false,
+        saveUninitialized: false,
+        store: MongoStore.create({
+            mongoUrl: process.env.MONGO_URL,
+        }),
+        cookie: {maxAge: 3.6e6*24},
+    })
+)
+app.use(passport.initialize());
+app.use(passport.session());
+
+
+//register kakao oauth passport strategy
+passportConfig();
+
 connectDB
-    .then(() => {
+    .then(() => { 
         console.log("👽 Connected to MongoDB 👽")
     })
     .catch((err) => {
