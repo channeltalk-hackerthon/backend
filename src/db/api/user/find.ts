@@ -1,7 +1,7 @@
-import { ObjectId } from 'mongoose';
+import mongoose from 'mongoose';
 import User from '../../schema/user';
 
-const findUser = (userId: ObjectId) => {
+const findUser = (userId: mongoose.Types.ObjectId) => {
     return new Promise((res, rej) => {
         User
             .findOne({_id: userId})
