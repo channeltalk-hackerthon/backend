@@ -1,6 +1,7 @@
 
 import express, {Express, Request, Response} from "express";
 import connectDB from "./db/connect";
+import authRouter from './routes/auth';
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -17,6 +18,8 @@ connectDB
 app.get('/checkserver', (req: Request, res: Response) => {
     res.send("Server is running!");
 })
+
+app.use('/auth', authRouter);
 
 app.listen(port, () => {
     console.log(`🏀 Server is Running at http://localhost:${port}`);
