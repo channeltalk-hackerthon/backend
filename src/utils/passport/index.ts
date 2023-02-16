@@ -9,6 +9,7 @@ const passportConfig = () => {
     })
 
     passport.deserializeUser((userId: String, done) => {
+        console.log(`In passport deserializer. userId is ${userId}`)
         findUser(new mongoose.Types.ObjectId(`${userId}`))
             .then((user: any) => {
                 done(null, user);
