@@ -1,6 +1,6 @@
 import passport from "passport";
 import findUser from "../../db/api/user/find";
-import kakaoStrategy from './kakao.strategy';
+import register_kakaoStrategy from './kakao.strategy';
 import mongoose from "mongoose";
 
 const passportConfig = () => {
@@ -9,7 +9,7 @@ const passportConfig = () => {
     })
 
     passport.deserializeUser((userId: String, done) => {
-        findUser(new mongoose.Schema.Types.ObjectId(`${userId}`))
+        findUser(new mongoose.Types.ObjectId(`${userId}`))
             .then((user: any) => {
                 done(null, user);
             })
@@ -18,7 +18,7 @@ const passportConfig = () => {
             })
     })
 
-    kakaoStrategy();
+    register_kakaoStrategy();
 }
 
 export default passportConfig
