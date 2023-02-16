@@ -4,7 +4,7 @@ import findUserBySns from "../../db/api/user/findbySns";
 import userExists from '../../db/api/user/exists';
 import createUser from "../../db/api/user/create";
 
-const kakao_passport = () => {
+const register_kakaoStrategy = () => {
     passport.use(
         new Strategy({
             clientID: `${process.env.KAKAO_RESTAPI_KEY}`,
@@ -35,4 +35,4 @@ const kakao_passport = () => {
     )
 }
 
-export default kakao_passport;
+export default register_kakaoStrategy;
