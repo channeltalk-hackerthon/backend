@@ -7,16 +7,19 @@ authRouter.get('/kakao', passport.authenticate('kakao'));
 
 authRouter.get('/kakao/callback', passport.authenticate('kakao', 
     {
-        failureRedirect: '/',
+        failureRedirect: '/failed',
     }), (req: Request, res: Response) => {
-        res.redirect('/checkserver')
+        res.redirect('/checkuser')
     });
 
 authRouter.post('/kakao/logout', (req: Request, res: Response, next: NextFunction) => {
     req.logout((err) => {
         if(err) {return res.redirect('/failed')}
-        else {res.redirect('/');}
-    })
+    });
+    req.session.destroy((err) => {
+        if(err) {return res.redirect('/failed')}
+    });
+    res.redirect('/checkserver');
 })
 
 export default authRouter;
