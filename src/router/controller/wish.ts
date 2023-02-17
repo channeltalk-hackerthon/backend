@@ -1,4 +1,5 @@
 import express, { NextFunction, Request, Response, Router } from "express";
+import mongoose from "mongoose";
 import pushUserwish from "../../db/api/user/pushUserWish";
 
 import createWish from "../../db/api/wish/create";
@@ -10,6 +11,18 @@ import isLoggedIn from "../auth/isLoggedIn";
 
 const wishRouter: Router = express.Router();
 
+wishRouter.get("/:id", (req: Request, res: Response, next: NextFunction) => {
+  const wishId = new mongoose.Types.ObjectId(req.params.id);
+
+  findWish(wishId)
+    .then((wish) => {
+      res.json({ wish: wish });
+    })
+    .catch((err) => {
+      res.status(500).json({ msg: "Error occured", cause: `${err}` });
+    });
+});
+
 wishRouter.post(
   "/create",
   isLoggedIn,
@@ -18,13 +31,17 @@ wishRouter.post(
       res.status(500).json({ msg: `error occured`, cause: `not logged in` });
       return;
     }
+    console.log(req.body);
+    console.log(req.user?._id);
     createWish(
       req.user?._id,
-      req.body.product_id,
+      new mongoose.Types.ObjectId(req.body.productId),
+      req.body.description,
       req.body.expire_at,
       req.body.type
     )
       .then((wish: any) => {
+        console.log("working!");
         if (!req.user?._id) {
           res
             .status(500)
