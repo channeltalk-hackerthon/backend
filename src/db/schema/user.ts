@@ -5,6 +5,7 @@ interface IUser {
     provider: String,
     snsId: String,
     wishlist: [Types.ObjectId],
+    friendList: [Types.ObjectId],
 }
 
 const userSchema = new Schema<IUser> (
@@ -13,6 +14,7 @@ const userSchema = new Schema<IUser> (
         provider: {type: String, required: true},
         snsId: {type: String, required: true},
         wishlist: [{type: Schema.Types.ObjectId, ref: 'Wish', required: true}],
+        friendList: [{type: Schema.Types.ObjectId, ref: 'User', required: true}]
     },
     {
         timestamps: {

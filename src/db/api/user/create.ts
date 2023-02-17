@@ -6,6 +6,7 @@ const createUser = (name: String, provider: String, snsId: String) => {
         provider: provider,
         snsId: snsId,
         wishlist: [],
+        friendList: [], 
     });
 
     return new Promise((res, rej) => {
