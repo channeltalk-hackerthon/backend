@@ -7,6 +7,7 @@ import {config} from 'dotenv';
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import isLoggedIn from "./router/auth/isLoggedIn";
+import initProductDB from "./db/api/product/init";
 
 const app: Express = express();
 const port = process.env.PORT;
@@ -41,6 +42,15 @@ connectDB
     .catch((err) => {
         console.log("💩 Failed to connect to MongoDB 💩")
         throw new Error(err);
+    })
+
+initProductDB()
+    .then(() => {
+        console.log("😺 Initialize Product DB 😺")
+    })
+    .catch((err) => {
+        console.log("🙀 Failed to initialize Product DB 🙀")
+        throw new Error(err)
     })
 
 app.get('/checkserver', (req: Request, res: Response) => {
