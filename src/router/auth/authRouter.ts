@@ -27,7 +27,7 @@ authRouter.get(
   (req: Request, res: Response) => {
     const returnTo = req.cookies["returnTo"];
     res.clearCookie("returnTo");
-    res.redirect(returnTo);
+    res.redirect("https://sajo.codingbear.kr" + returnTo);
   }
 );
 
