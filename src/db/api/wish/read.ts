@@ -1,9 +1,8 @@
-import {ObjectId} from 'mongoose';
 import User from '../../schema/user';
-import Wish from '../../schema/wish';
 import findUser from '../user/find';
+import mongoose from 'mongoose';
 
-const readWish = (owner: ObjectId) => {
+const readWish = (owner: mongoose.Types.ObjectId) => {
     return new Promise((res, rej) => {
         findUser(owner)
             .then((user: any) => {

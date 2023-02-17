@@ -1,10 +1,10 @@
-import {Schema, model, connect, ObjectId} from 'mongoose';
+import {Schema, model, Types} from 'mongoose';
 
 interface IUser {
     name: String,
     provider: String,
     snsId: String,
-    wishlist: [ObjectId],
+    wishlist: [Types.ObjectId],
 }
 
 const userSchema = new Schema<IUser> (
