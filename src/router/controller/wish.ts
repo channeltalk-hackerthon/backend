@@ -1,5 +1,5 @@
-import pushUserwish from "db/api/user/pushUserWish";
 import express, { NextFunction, Request, Response, Router } from "express";
+import pushUserwish from "../../db/api/user/pushUserWish";
 
 import createWish from "../../db/api/wish/create";
 import deleteWish from "../../db/api/wish/delete";

@@ -1,5 +1,5 @@
-import Product from "db/schema/product";
 import { Types } from "mongoose";
+import Product from "../../../db/schema/product";
 
 const readProduct = (productId: Types.ObjectId) => {
   return new Promise((res, rej) => {
