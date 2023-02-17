@@ -6,7 +6,7 @@ const findWish = (wishId: mongoose.Types.ObjectId) => {
         Wish
             .findById(wishId)
             .then((wish) => {
-                if (wish == null) {rej("Wish not exists")}
+                if (wish == null || wish.status == 'inactive') {rej("Wish not exists")}
                 else {res(wish)}
             })
             .catch((err) => rej(err))

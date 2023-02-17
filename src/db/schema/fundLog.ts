@@ -4,6 +4,7 @@ interface IFundLog {
     wishId: ObjectId,
     funder: ObjectId,
     price: Number,
+    deleted: 'yes' | 'no'
 }
 
 const fundlogSchema = new Schema<IFundLog> (
@@ -11,6 +12,7 @@ const fundlogSchema = new Schema<IFundLog> (
         wishId: {type: Schema.Types.ObjectId, ref: 'Wish', required: true},
         funder: {type: Schema.Types.ObjectId, ref: 'User', required: true},
         price: {type: Number, required: true},
+        deleted: {type: String, enum: ['yes','no'], required: true},
     },
     {
         timestamps: {

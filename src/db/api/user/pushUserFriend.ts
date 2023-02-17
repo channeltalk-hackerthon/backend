@@ -1,7 +1,7 @@
-import { ObjectId } from 'mongoose';
+import mongoose, { ObjectId } from 'mongoose';
 import User from '../../schema/user';
 
-const pushUserFriend = (userId: ObjectId, friendId: ObjectId) => {
+const pushUserFriend = (userId: mongoose.Types.ObjectId, friendId: mongoose.Types.ObjectId) => {
     return new Promise((res, rej) => {
         User.updateOne({
             _id: userId
