@@ -49,10 +49,15 @@ app.get('/checkserver', (req: Request, res: Response) => {
 
 app.use('/auth', authRouter);
 
+
+
 //test purpose
-app.get('/checkuser',isLoggedIn, (req: Request, res: Response) => {
-    console.log("got checkuser request");
-    res.send(`user info: ${req.user}`);
+app.get('/loggedIn', isLoggedIn, (req: Request, res: Response) => {
+    res.send(`You are logged in! User info: ${req.user}`);
+})
+
+app.get('/loginFail', (req: Request, res: Response) => {
+    res.send(`Login Failed!!`);
 })
 
 
