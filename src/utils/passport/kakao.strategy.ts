@@ -14,7 +14,6 @@ const register_kakaoStrategy = () => {
             const snsId = profile.id;
             userExists(provider, snsId)
                 .then((result) => {
-                    console.log(`result in kakao strategy is ${result}`);
                     if(result == true) {
                         //user exists in database. 
                         //login user!
@@ -30,7 +29,6 @@ const register_kakaoStrategy = () => {
                 })
                 .catch((err) => {
                     console.log(err);
-                    console.log("hello world")
                     done(err);
                 })
         })
