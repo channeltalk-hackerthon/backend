@@ -70,6 +70,7 @@ userRouter.put(
     }
     const userId = new mongoose.Types.ObjectId(req.user?._id);
     const friendId = new mongoose.Types.ObjectId(req.body.friendId);
+    console.log(userId);
     pushUserFriend(userId, friendId)
       .then(() => {
         res.status(200).json({ msg: "friend added!" });
