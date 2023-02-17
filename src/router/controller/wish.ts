@@ -1,6 +1,9 @@
 import express, { NextFunction, Request, Response, Router } from "express";
 import mongoose from "mongoose";
+import createFundLog from "../../db/api/fundLog/create";
+import pushUserFundLog from "../../db/api/user/pushFundLog";
 import pushUserwish from "../../db/api/user/pushUserWish";
+import pushWishFundLog from "../../db/api/wish/pushWishFundLog";
 
 import createWish from "../../db/api/wish/create";
 import deleteWish from "../../db/api/wish/delete";
@@ -53,6 +56,36 @@ wishRouter.post(
       })
       .then(() => {
         res.status(200).json({ msg: "wish created!" });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ msg: `error occured`, cause: `${err}` });
+      });
+  }
+);
+
+wishRouter.post(
+  "/:id/fund",
+  isLoggedIn,
+  (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user?._id) {
+      res.status(500).json({ msg: `error occured`, cause: `not logged in` });
+      return;
+    }
+    const userId = new mongoose.Types.ObjectId(req.user?._id);
+    const wishId = new mongoose.Types.ObjectId(req.params.id);
+    const price = req.body.price;
+
+    createFundLog(wishId, userId, price)
+      .then((fundlog: any) => {
+        const fundlogId = fundlog._id;
+        return pushWishFundLog(userId, fundlogId);
+      })
+      .then((fundLogId: any) => {
+        return pushUserFundLog(userId, fundLogId);
+      })
+      .then(() => {
+        res.json({ msg: "funding success!" });
       })
       .catch((err) => {
         console.log(err);
