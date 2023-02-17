@@ -28,10 +28,6 @@ const register_kakaoStrategy = () => {
       (accessToken, refreshToken, profile, done) => {
         const provider = "kakao";
         const snsId = profile.id;
-
-        console.log(profile);
-
-        // FIXME: THIS VALUE IS WRONG
         const ageRange =
           AgeRecord[
             profile._json.kakao_account.age_range as keyof typeof AgeRecord
