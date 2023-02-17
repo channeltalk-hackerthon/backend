@@ -73,7 +73,7 @@ app.get("/checkserver", (req: Request, res: Response) => {
 
 app.use("/auth", authRouter);
 
-app.use("/public", publicRouter); // routes to public apis
+app.use("/api", publicRouter); // routes to public apis
 
 //test purpose
 app.get("/loggedIn", isLoggedIn, (req: Request, res: Response) => {
