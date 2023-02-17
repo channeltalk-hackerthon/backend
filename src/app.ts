@@ -1,6 +1,7 @@
 import express, {Express, Request, Response} from "express";
 import connectDB from "./db/connect";
 import authRouter from "./router/auth/authRouter";
+import publicRouter from "./router/public/routes";
 import passport from "passport";
 import passportConfig from "./utils/passport";
 import {config} from 'dotenv';
@@ -8,9 +9,14 @@ import session from 'express-session';
 import MongoStore from 'connect-mongo';
 import isLoggedIn from "./router/auth/isLoggedIn";
 import initProductDB from "./db/api/product/init";
+import bodyParser from "body-parser";
+const cookieParser = require('cookie-parser'); // import from으로 하니까 안됨
 
 const app: Express = express();
 const port = process.env.PORT;
+
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(cookieParser());
 
 //load env variables from dotenv file
 config();
@@ -58,6 +64,8 @@ app.get('/checkserver', (req: Request, res: Response) => {
 })
 
 app.use('/auth', authRouter);
+
+app.use('/public', publicRouter); // routes to public apis
 
 
 

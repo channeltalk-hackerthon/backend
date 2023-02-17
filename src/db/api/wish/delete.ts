@@ -1,12 +1,17 @@
-import {ObjectId} from 'mongoose';
+import mongoose, {ObjectId} from 'mongoose';
 import Wish from '../../schema/wish';
 
-const deleteWish = (owner: ObjectId, wishId: ObjectId) => {
+const deleteWish = (owner: mongoose.Types.ObjectId, wishId: mongoose.Types.ObjectId) => {
     return new Promise((res, rej) => {
-        Wish.deleteOne(
+        Wish.updateOne(
             {
                 _id: wishId,
                 owner: owner,
+            },
+            {
+                $set: {
+                    status: 'inactive'
+                }
             })
             .then((result) => {
                 res(result);

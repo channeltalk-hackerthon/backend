@@ -10,6 +10,7 @@ interface IWish {
     fundlogs: [ObjectId],
     started_at: Date,
     expire_at: Date,
+    type: String,
     status: 'active' | 'inactive' | 'completed',
 }
 
@@ -24,6 +25,7 @@ const wishSchema = new Schema<IWish> (
         fundlogs: [{type: Schema.Types.ObjectId, ref: 'FundLog', required: true}],
         started_at: {type: Date, required: true},
         expire_at: {type: Date, required: true},
+        type: {type: String, required: true},
         status: {type: String, enum: ['active', 'inactive', 'completed'], required: true}
     }
 )
