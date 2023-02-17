@@ -19,10 +19,10 @@ authRouter.get('/kakao/logout', (req: Request, res: Response, next: NextFunction
         })
         .then(() => {
             res.clearCookie('connect.sid')
-            res.redirect('/');
+            res.redirect('/checkserver');
         })
-        .catch(() => {
-            res.redirect('/logouterr')
+        .catch((err) => {
+            next(err)
         })
 })
 
