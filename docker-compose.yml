@@ -16,3 +16,4 @@ services:
       - KAKAO_RESTAPI_KEY=${KAKAO_RESTAPI_KEY}
       - SESSION_SECRET=${SESSION_SECRET}
       - MONGO_URL=mongodb://root:${MONGO_ROOT_PASSWORD}@localhost:27017/gift-fund?authSource=admin
+      - BASE_URL=${BASE_URL}
