@@ -5,6 +5,7 @@ import readProduct from "../product/read";
 const createWish = (
   owner: mongoose.Types.ObjectId,
   product_id: mongoose.Types.ObjectId,
+  description: String,
   expire_at: Date,
   type: String
 ) => {
@@ -15,7 +16,7 @@ const createWish = (
           owner: owner,
           product_name: product.product_name,
           product_id: product_id,
-          description: product.description,
+          description: description,
           price: product.price,
           total: 0,
           fundlogs: [],

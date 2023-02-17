@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "start": "node dist/src/app.js",
+    "starts": "nodemon src/app.js",
     "build": "tsc -p ./",
     "clear": "rm -r ./dist/",
     "dev": "nodemon --watch \"src/**/*.ts\" src/app.ts",

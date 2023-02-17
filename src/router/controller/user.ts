@@ -15,7 +15,7 @@ userRouter.delete(
       res.status(500).json({ msg: `error occured`, cause: `not logged in` });
       return;
     }
-
+    console.log(req.user?._id);
     deleteUser(req.user?._id)
       .then(() => {
         res.status(200).json({ msg: "user deleted!" });

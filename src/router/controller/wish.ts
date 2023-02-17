@@ -1,5 +1,9 @@
 import express, { NextFunction, Request, Response, Router } from "express";
+import mongoose from "mongoose";
+import createFundLog from "../../db/api/fundLog/create";
+import pushUserFundLog from "../../db/api/user/pushFundLog";
 import pushUserwish from "../../db/api/user/pushUserWish";
+import pushWishFundLog from "../../db/api/wish/pushWishFundLog";
 
 import createWish from "../../db/api/wish/create";
 import deleteWish from "../../db/api/wish/delete";
@@ -10,6 +14,38 @@ import isLoggedIn from "../auth/isLoggedIn";
 
 const wishRouter: Router = express.Router();
 
+wishRouter.get(
+  "/",
+  isLoggedIn,
+  (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user?._id) {
+      res.status(500).json({ msg: `error occured`, cause: `not logged in` });
+      return;
+    }
+    const userId = req.user?._id;
+    readWish(userId)
+      .then((wishlist) => {
+        res.status(200).json({ wishlist: wishlist });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ msg: `error occured`, cause: `${err}` });
+      });
+  }
+);
+
+wishRouter.get("/:id", (req: Request, res: Response, next: NextFunction) => {
+  const wishId = new mongoose.Types.ObjectId(req.params.id);
+
+  findWish(wishId)
+    .then((wish) => {
+      res.json({ wish: wish });
+    })
+    .catch((err) => {
+      res.status(500).json({ msg: "Error occured", cause: `${err}` });
+    });
+});
+
 wishRouter.post(
   "/create",
   isLoggedIn,
@@ -18,9 +54,12 @@ wishRouter.post(
       res.status(500).json({ msg: `error occured`, cause: `not logged in` });
       return;
     }
+    console.log(req.body);
+    console.log(req.user?._id);
     createWish(
       req.user?._id,
-      req.body.product_id,
+      new mongoose.Types.ObjectId(req.body.productId),
+      req.body.description,
       req.body.expire_at,
       req.body.type
     )
@@ -36,6 +75,36 @@ wishRouter.post(
       })
       .then(() => {
         res.status(200).json({ msg: "wish created!" });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ msg: `error occured`, cause: `${err}` });
+      });
+  }
+);
+
+wishRouter.post(
+  "/:id/fund",
+  isLoggedIn,
+  (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user?._id) {
+      res.status(500).json({ msg: `error occured`, cause: `not logged in` });
+      return;
+    }
+    const userId = new mongoose.Types.ObjectId(req.user?._id);
+    const wishId = new mongoose.Types.ObjectId(req.params.id);
+    const price = req.body.price;
+
+    createFundLog(wishId, userId, price)
+      .then((fundlog: any) => {
+        const fundlogId = fundlog._id;
+        return pushWishFundLog(userId, fundlogId, price);
+      })
+      .then((fundLogId: any) => {
+        return pushUserFundLog(userId, fundLogId);
+      })
+      .then(() => {
+        res.json({ msg: "funding success!" });
       })
       .catch((err) => {
         console.log(err);
@@ -70,25 +139,6 @@ wishRouter.get(
     findWish(req.body.wishId)
       .then((wish) => {
         res.status(200).json({ wish: wish });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ msg: `error occured`, cause: `${err}` });
-      });
-  }
-);
-
-wishRouter.get(
-  "/read",
-  isLoggedIn,
-  (req: Request, res: Response, next: NextFunction) => {
-    if (!req.user?._id) {
-      res.status(500).json({ msg: `error occured`, cause: `not logged in` });
-      return;
-    }
-    readWish(req.user?._id)
-      .then((wishlist) => {
-        res.status(200).json({ wishlist: wishlist });
       })
       .catch((err) => {
         console.log(err);
