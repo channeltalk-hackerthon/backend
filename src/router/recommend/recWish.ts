@@ -1,3 +1,4 @@
+/*
 import express, {Router, Request, Response, NextFunction} from 'express';
 import mongoose from 'mongoose';
 import findUser from '../../db/api/user/find';
@@ -36,14 +37,15 @@ one-hot vector화 시켜서 cosin 유사도
 
 
 */
+
 const createFeed = (self: mongoose.Types.ObjectId) => {
     return new Promise((res,rej) => {
         findUser(self)
             .then((user: any) => {
                 const feed = user.friendList; // 1
-                const wishes = Wish.find(); // all wishes to be 
+                //const wishes = Wish.find(); // all wishes to be 
                 
-                const 
+               
                 
 
             })
@@ -58,3 +60,4 @@ const createFeed = (self: mongoose.Types.ObjectId) => {
 
 
 export default createFeed
+*/
