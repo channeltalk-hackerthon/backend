@@ -3,12 +3,13 @@ import Wish from "../../schema/wish";
 
 const pushWishFundLog = (
   userId: mongoose.Types.ObjectId,
-  fundLogId: mongoose.Types.ObjectId
+  fundLogId: mongoose.Types.ObjectId,
+  price: Number
 ) => {
   return new Promise((res, rej) => {
     Wish.updateOne(
       {
-        _id: userId,
+        owner: userId,
       },
       {
         $push: {
@@ -16,7 +17,17 @@ const pushWishFundLog = (
         },
       }
     )
-      .then((doc) => {
+      .then(() => {
+        return Wish.updateOne(
+          { owner: userId },
+          {
+            $inc: {
+              total: price,
+            },
+          }
+        );
+      })
+      .then(() => {
         res(fundLogId);
       })
       .catch((err) => {

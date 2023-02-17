@@ -14,6 +14,26 @@ import isLoggedIn from "../auth/isLoggedIn";
 
 const wishRouter: Router = express.Router();
 
+wishRouter.get(
+  "/",
+  isLoggedIn,
+  (req: Request, res: Response, next: NextFunction) => {
+    if (!req.user?._id) {
+      res.status(500).json({ msg: `error occured`, cause: `not logged in` });
+      return;
+    }
+    const userId = req.user?._id;
+    readWish(userId)
+      .then((wishlist) => {
+        res.status(200).json({ wishlist: wishlist });
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json({ msg: `error occured`, cause: `${err}` });
+      });
+  }
+);
+
 wishRouter.get("/:id", (req: Request, res: Response, next: NextFunction) => {
   const wishId = new mongoose.Types.ObjectId(req.params.id);
 
@@ -79,7 +99,7 @@ wishRouter.post(
     createFundLog(wishId, userId, price)
       .then((fundlog: any) => {
         const fundlogId = fundlog._id;
-        return pushWishFundLog(userId, fundlogId);
+        return pushWishFundLog(userId, fundlogId, price);
       })
       .then((fundLogId: any) => {
         return pushUserFundLog(userId, fundLogId);
@@ -120,25 +140,6 @@ wishRouter.get(
     findWish(req.body.wishId)
       .then((wish) => {
         res.status(200).json({ wish: wish });
-      })
-      .catch((err) => {
-        console.log(err);
-        res.status(500).json({ msg: `error occured`, cause: `${err}` });
-      });
-  }
-);
-
-wishRouter.get(
-  "/read",
-  isLoggedIn,
-  (req: Request, res: Response, next: NextFunction) => {
-    if (!req.user?._id) {
-      res.status(500).json({ msg: `error occured`, cause: `not logged in` });
-      return;
-    }
-    readWish(req.user?._id)
-      .then((wishlist) => {
-        res.status(200).json({ wishlist: wishlist });
       })
       .catch((err) => {
         console.log(err);

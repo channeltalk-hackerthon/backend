@@ -14,8 +14,8 @@ const pushUserFundLog = (
         $push: { fundLogList: fundlogId },
       }
     )
-      .then((result) => {
-        res(result);
+      .then(() => {
+        res(void 0);
       })
       .catch((err) => {
         rej(err);
