@@ -1,25 +1,29 @@
 import express, {Router, Request, Response, NextFunction} from 'express';
 import passport from 'passport';
-import { nextTick } from 'process';
+import {logOut, destroySession} from './logOut';
 const authRouter: Router = express.Router();
 
 authRouter.get('/kakao', passport.authenticate('kakao'));
 
 authRouter.get('/kakao/callback', passport.authenticate('kakao', 
     {
-        failureRedirect: '/failed',
+        failureRedirect: '/loginFail',
     }), (req: Request, res: Response) => {
-        res.redirect('/checkuser')
+        res.redirect('/loggedIn')
     });
 
-authRouter.post('/kakao/logout', (req: Request, res: Response, next: NextFunction) => {
-    req.logout((err) => {
-        if(err) {return res.redirect('/failed')}
-    });
-    req.session.destroy((err) => {
-        if(err) {return res.redirect('/failed')}
-    });
-    res.redirect('/checkserver');
+authRouter.get('/kakao/logout', (req: Request, res: Response, next: NextFunction) => {
+    logOut(req)
+        .then(() => {
+            return destroySession(req);
+        })
+        .then(() => {
+            res.clearCookie('connect.sid')
+            res.redirect('/');
+        })
+        .catch(() => {
+            res.redirect('/logouterr')
+        })
 })
 
 export default authRouter;
