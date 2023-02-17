@@ -7,6 +7,17 @@ import isLoggedIn from "../auth/isLoggedIn";
 
 const userRouter: Router = express.Router();
 
+userRouter.get(
+  "/isloggedin",
+  (req: Request, res: Response, next: NextFunction) => {
+    if (req.user) {
+      res.json({ isLoggedIn: true });
+    } else {
+      res.json({ isLoggedIn: false });
+    }
+  }
+);
+
 userRouter.delete(
   "/me",
   isLoggedIn,
@@ -28,14 +39,17 @@ userRouter.delete(
 );
 
 userRouter.delete(
-  "/friend/delete",
+  "/me/friend",
   isLoggedIn,
   (req: Request, res: Response, next: NextFunction) => {
     if (!req.user?._id) {
       res.status(500).json({ msg: `error occured`, cause: `not logged in` });
       return;
     }
-    popUserFriend(req.user?._id, req.body.friendId)
+    const userId = new mongoose.Types.ObjectId(req.user?._id);
+    const friendId = new mongoose.Types.ObjectId(req.body.friendId);
+
+    popUserFriend(userId, friendId)
       .then(() => {
         res.status(200).json({ msg: "friend deleted!" });
       })
@@ -46,15 +60,17 @@ userRouter.delete(
   }
 );
 
-userRouter.post(
-  "/friend/add",
+userRouter.put(
+  "/me/friend",
   isLoggedIn,
   (req: Request, res: Response, next: NextFunction) => {
     if (!req.user?._id) {
       res.status(500).json({ msg: `error occured`, cause: `not logged in` });
       return;
     }
-    pushUserFriend(req.user?._id, req.body.friendId)
+    const userId = new mongoose.Types.ObjectId(req.user?._id);
+    const friendId = new mongoose.Types.ObjectId(req.body.friendId);
+    pushUserFriend(userId, friendId)
       .then(() => {
         res.status(200).json({ msg: "friend added!" });
       })
