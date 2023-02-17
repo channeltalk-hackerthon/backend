@@ -12,7 +12,6 @@ const createWish = (
   return new Promise((res, rej) => {
     readProduct(product_id)
       .then((product: any) => {
-        console.log(product);
         const newwish = new Wish({
           owner: owner,
           product_name: product.product_name,

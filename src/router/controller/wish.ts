@@ -64,7 +64,6 @@ wishRouter.post(
       req.body.type
     )
       .then((wish: any) => {
-        console.log("working!");
         if (!req.user?._id) {
           res
             .status(500)

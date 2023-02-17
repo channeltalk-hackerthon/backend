@@ -25,12 +25,21 @@ config();
 app.use(
   session({
     secret: `${process.env.SESSION_SECRET}`,
-    resave: false,
-    saveUninitialized: false,
+    resave: true,
+    saveUninitialized: true,
     store: MongoStore.create({
       mongoUrl: process.env.MONGO_URL,
     }),
-    cookie: { maxAge: 3.6e6 * 24 },
+    cookie: {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: "lax",
+      maxAge: 3.6e6 * 24,
+      domain:
+        process.env.NODE_ENV === "production"
+          ? "." + process.env.BASE_URL
+          : undefined,
+    },
   })
 );
 
