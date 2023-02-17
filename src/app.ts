@@ -37,6 +37,7 @@ app.use(
     store: MongoStore.create({
       mongoUrl: process.env.MONGO_URL,
     }),
+    proxy: true,
     cookie: {
       httpOnly: true,
       secure: process.env.NODE_ENV === "production",
@@ -94,3 +95,5 @@ app.get("/loginFail", (req: Request, res: Response) => {
 app.listen(port, () => {
   console.log(`🏀 Server is Running at http://localhost:${port}`);
 });
+
+app.set("trust proxy", 1); // trust first proxy
