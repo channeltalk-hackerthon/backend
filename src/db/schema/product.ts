@@ -1,18 +1,17 @@
-import {Schema, model, ObjectId} from 'mongoose';
+import mongoose, {Schema, model, ObjectId} from 'mongoose';
 
 interface IProduct {
     product_name: String,
-    product_description: String,
-    currency: String,
     price: Number,
+    recommendation_vector: ObjectId
 }
+
 
 const productSchema = new Schema<IProduct> (
     {
         product_name: {type: String, required: true},
-        product_description: {type: String, required: true},
-        currency: {type: String, required: true},
         price: {type: Number, required: true},
+        recommendation_vector: {type: Schema.Types.ObjectId, ref: 'Recommendation', required: true},
     }
 )
 
