@@ -1,5 +1,6 @@
 import bodyParser from "body-parser";
 import MongoStore from "connect-mongo";
+import cors from "cors";
 import { config } from "dotenv";
 import express, { Express, Request, Response } from "express";
 import session from "express-session";
@@ -17,6 +18,12 @@ const port = process.env.PORT || 3000;
 
 app.use(bodyParser.json());
 app.use(cookieParser());
+
+app.use(
+  cors({
+    origin: "https://sajo.codingbear.kr",
+  })
+);
 
 //load env variables from dotenv file
 config();
