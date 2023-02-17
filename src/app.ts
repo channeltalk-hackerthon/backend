@@ -35,6 +35,10 @@ app.use(
       secure: process.env.NODE_ENV === "production",
       sameSite: "lax",
       maxAge: 3.6e6 * 24,
+      domain:
+        process.env.NODE_ENV === "production"
+          ? "." + process.env.BASE_URL
+          : undefined,
     },
   })
 );
